@@ -16,9 +16,6 @@ const UserSchema = new mongoose.Schema({
     followings: {
         type: Array, default: []
     },
-    isAdmin: {
-        type: Boolean, default: false
-    },
     about: {
         type: String, max: 50
     },
