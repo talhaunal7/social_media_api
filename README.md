@@ -47,3 +47,5 @@ MONGODB_URL=mongodburlexample
 PASSWORD_SECRET=secretexample
 ACCESS_TOKEN_SECRET=secretexample
 ```
+<br>
+<img src="https://i.imgur.com/nCfmXPM_d.webp?maxwidth=760&fidelity=grand"/>
