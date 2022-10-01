@@ -5,8 +5,64 @@ const {
     verifyToken,
     verifyAuthorization
 } = require("./verifyTokens");
-//const { model } = require("mongoose");
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Post:
+ *       type: object
+ *       required:
+ *         - userId
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: The auto-generated id of the post
+ *         userId:
+ *           type: string
+ *           description: id of the post's owner 
+ *         description:
+ *           type: string  
+ *           description: content of the post
+ *         likes:
+ *           type: Array
+ *           description: an array of the user ids who liked the post        
+ *       example:
+ *         id: 823uru2rıjo438foj
+ *         description: I had a great day today!
+ */
+
+/**
+  * @swagger
+  * tags:
+  *   name: Posts
+  *   description: The Post Operations 
+  */
+
+/**
+ * @swagger
+ * /posts/:
+ *  post:
+ *    summary: Create a post
+ *    tags: [Posts]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object 
+ *            example:
+ *              description: this is my first post on social media!
+ *    responses:
+ *      200:
+ *        description: The post is published
+ *      401:
+ *        description: Couldn't find a token or invalid token
+ *      403:
+ *        description: Auth error or empty post
+ *      500:
+ *        description: Some error happened
+ */
 
 router.post("/", verifyToken, async (req, res) => {
     if (!req.body.description)
@@ -19,6 +75,32 @@ router.post("/", verifyToken, async (req, res) => {
         res.status(500).json(error);
     }
 })
+
+/**
+ * @swagger
+ * /posts/:
+ *  put:
+ *    summary: Update a post
+ *    tags: [Posts]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object 
+ *            example:
+ *              postId: sjfks7yhfh8349fj348fj
+ *              description: this is my updated post
+ *    responses:
+ *      200:
+ *        description: The post is updated
+ *      401:
+ *        description: Couldn't find a token or invalid token
+ *      403:
+ *        description: Auth error
+ *      500:
+ *        description: Some error happened
+ */
 
 router.put("/", verifyToken, async (req, res) => {
     try {
@@ -33,6 +115,31 @@ router.put("/", verifyToken, async (req, res) => {
         res.status(500).json(error);
     }
 })
+
+/**
+ * @swagger
+ * /posts/:
+ *  delete:
+ *    summary: Delete a post
+ *    tags: [Posts]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object 
+ *            example:
+ *              postId: sjfks7yhfh8349fj348fj
+ *    responses:
+ *      200:
+ *        description: The post is deleted
+ *      401:
+ *        description: Couldn't find a token or invalid token
+ *      403:
+ *        description: Auth error
+ *      500:
+ *        description: Some error happened
+ */
 
 router.delete("/", verifyToken, async (req, res) => {
     try {
@@ -49,6 +156,31 @@ router.delete("/", verifyToken, async (req, res) => {
     }
 })
 
+/**
+ * @swagger
+ * /posts/like:
+ *  put:
+ *    summary: Like a post
+ *    tags: [Posts]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object 
+ *            example:
+ *              postId: sjfks7yhfh8349fj348fj
+ *    responses:
+ *      200:
+ *        description: The post is liked or disliked 
+ *      401:
+ *        description: Couldn't find a token or invalid token
+ *      403:
+ *        description: Auth error
+ *      500:
+ *        description: Some error happened
+ */
+
 router.put("/like", verifyToken, async (req, res) => {
     try {
         const post = await Post.findById(req.body.postId);
@@ -63,6 +195,29 @@ router.put("/like", verifyToken, async (req, res) => {
         res.status(500).json(error);
     }
 })
+
+/**
+ * @swagger
+ * /posts/timeline:
+ *  get:
+ *    summary: Get timeline posts
+ *    tags: [Posts]
+ *    responses:
+ *      200:
+ *       content:
+ *         application/json:
+ *           schema:          
+ *             example:
+ *               postId: 823ur238rfj238f23 
+ *               description: ldnslkf 
+ *           
+ *      401:
+ *        description: Couldn't find a token or invalid token
+ *      403:
+ *        description: Auth error
+ *      500:
+ *        description: Some error happened
+ */
 
 router.get("/timeline", verifyToken, async (req, res) => {
     try {

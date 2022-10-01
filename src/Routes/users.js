@@ -6,6 +6,83 @@ const {
     verifyAuthorization
 } = require("./verifyTokens");
 
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       required:
+ *         - username
+ *         - email
+ *         - password
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: The auto-generated id of the user
+ *         username:
+ *           type: string
+ *         email:
+ *           type: string
+ *           description: email address of the user
+ *         followers:
+ *           type: Array
+ *           description: id's of the followers
+ *         followings:
+ *           type: Array
+ *           description: id's of the followings
+ *         about:
+ *          type: string
+ *          description: about section
+ *         city:
+ *          type: string
+ *          description: the current city the user is living in
+ *         from:
+ *          type: string
+ *          description: the city/country the user has born in
+ *         interests:
+ *          type: Array
+ *          description: List of the interests
+ *       example:
+ *         id: d5fE_aszjkndf213fkls12
+ *         username: john doe
+ *         email: johndoe@gmail.com
+ */
+
+ /**
+  * @swagger
+  * tags:
+  *   name: Users
+  *   description: The User Operations 
+  */
+
+ /**
+ * @swagger
+ * /users/:
+ *  put:
+ *    summary: Update the user information
+ *    tags: [Users]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object 
+ *            example:
+ *              about: new about section    
+ *              city : Istanbul            
+ *    responses:
+ *      200:
+ *        description: User is successfully updated
+ *      401:
+ *        description: Couldn't find a token or invalid token
+ *      403:
+ *        description: You are not authorized     
+ *      500:
+ *        description: Some error happened
+ */
+
 router.put("/", verifyToken, async (req, res) => {
     if (req.body.password) {
         req.body.password = CryptoJS.AES.encrypt(req.body.password, process.env.PASSWORD_SECRET).toString();
@@ -21,6 +98,23 @@ router.put("/", verifyToken, async (req, res) => {
     }
 })
 
+/**
+ * @swagger
+ * /users/:
+ *  delete:
+ *    summary: Delete the user
+ *    tags: [Users]         
+ *    responses:
+ *      200:
+ *        description: User is successfully deleted
+ *      401:
+ *        description: Couldn't find a token or invalid token
+ *      403:
+ *        description: You are not authorized     
+ *      500:
+ *        description: Some error happened
+ */
+
 router.delete("/", verifyToken, async (req, res) => {
     try {
         await User.findByIdAndDelete(req.user.id);
@@ -30,6 +124,31 @@ router.delete("/", verifyToken, async (req, res) => {
         return res.status(500).json(err);
     }
 })
+
+/**
+ * @swagger
+ * /users/follow:
+ *  put:
+ *    summary: Follow another user
+ *    tags: [Users]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object 
+ *            example:
+ *              id: 238orjf43ofj34fjo30foj3
+ *    responses:
+ *      200:
+ *        description: User is successfully followed
+ *      401:
+ *        description: Couldn't find a token or invalid token
+ *      403:
+ *        description: Auth error or already following
+ *      500:
+ *        description: Some error happened
+ */
 
 router.put("/follow", verifyToken, async (req, res) => {
 
@@ -52,6 +171,30 @@ router.put("/follow", verifyToken, async (req, res) => {
     }
 
 })
+/**
+ * @swagger
+ * /users/unfollow:
+ *  put:
+ *    summary: Unfollow another user
+ *    tags: [Users]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object 
+ *            example:
+ *              id: 238orjf43ofj34fjo30foj3
+ *    responses:
+ *      200:
+ *        description: User is successfully unfollowed
+ *      401:
+ *        description: Couldn't find a token or invalid token
+ *      403:
+ *        description: Auth error or not following
+ *      500:
+ *        description: Some error happened
+ */
 
 router.put("/unfollow", verifyToken, async (req, res) => {
     if (req.user.id !== req.body.id) {

@@ -17,6 +17,5 @@ const PostSchema = new mongoose.Schema({
     {
         timestamps: true
     });
-
-//export the model so you can use on other files  
+ 
 module.exports = mongoose.model("Post", PostSchema);

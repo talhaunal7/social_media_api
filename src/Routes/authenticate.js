@@ -5,6 +5,35 @@ const User = require("../Models/User");
 const CryptoJS = require("crypto-js");
 const jwt = require('jsonwebtoken');
 
+/**
+  * @swagger
+  * tags:
+  *   name: Auth
+  *   description: Login and Register 
+  */
+
+/**
+ * @swagger
+ * /auth/register:
+ *  post:
+ *    summary: Register to social media app
+ *    tags: [Auth]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object 
+ *            example:
+ *              username: johndoe
+ *              email: johndoe@gmail.com
+ *              password: verystrongpassword
+ *    responses:
+ *      200:
+ *        description: Successfully registered
+ *      500:
+ *        description: Some error happened
+ */
 
 router.post("/register", async (req, res) => {
     try {
@@ -20,6 +49,36 @@ router.post("/register", async (req, res) => {
         res.status(500).json(error);
     }
 })
+/**
+ * @swagger
+ * /auth/login:
+ *  post:
+ *    summary: Login to social media app
+ *    tags: [Auth]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object 
+ *            example:
+ *              username: johndoe
+ *              password: verystrongpassword
+ *    responses:
+ *      200:
+ *        description: Login successful
+ *        content:
+ *          application/json:
+ *            schema: 
+ *              example:
+ *                accesstoken: ey8239udj238fjd0293jf032fj230849fjjf23hfd23p0f
+ *      401:
+ *        description: invalid password 
+ *      404:
+ *        description: invalid username        
+ *      500:
+ *        description: Some error happened
+ */
 
 router.post("/login", async (req, res) => {
     try {
