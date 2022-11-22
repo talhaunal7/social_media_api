@@ -1,5 +1,7 @@
 # social-media-api
 
+Simple Social Medi API which is performing various CRUD operations.
+
 ## Tech stack & Open-source libraries
 
 ### Server - Backend
